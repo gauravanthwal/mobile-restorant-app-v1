@@ -22,10 +22,32 @@ const StackNavigation = () => {
           <Stack.Screen
             name={screens.orders.name}
             component={screens.orders.component}
+            options={{
+              headerShown: true,
+              title: 'My Orders',
+              headerShadowVisible: false,
+              headerBackVisible: false,
+              headerTitleAlign: 'center',
+              headerStyle: {
+                backgroundColor: '#f3f4f6',
+              },
+              headerLeft: () => <HeaderLeftArrow />,
+            }}
           />
           <Stack.Screen
             name={screens.cart.name}
             component={screens.cart.component}
+            options={{
+              headerShown: true,
+              title: 'My Cart',
+              headerShadowVisible: false,
+              headerBackVisible: false,
+              headerTitleAlign: 'center',
+              headerStyle: {
+                backgroundColor: '#f3f4f6',
+              },
+              headerLeft: () => <HeaderLeftArrow />,
+            }}
           />
           <Stack.Screen
             name={screens.produtDetails.name}
@@ -33,7 +55,6 @@ const StackNavigation = () => {
             options={{
               headerShown: true,
               title: '',
-              // headerTintColor: '#fff',
               headerShadowVisible: false,
               headerBackVisible: false,
               headerStyle: {

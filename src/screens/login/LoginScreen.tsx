@@ -11,22 +11,27 @@ import {
 import React, {useEffect, useState} from 'react';
 import {ArrowLeftIcon} from 'react-native-heroicons/solid';
 import {themeColors} from '../../theme';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {screens} from '../../navigation/screenDetails';
 import LoginWithServices from '../../components/login/LoginWithServices';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginUser} from '../../redux/features/authSlice';
 
-const LoginScreen = ({navigation}: any) => {
+const LoginScreen = ({route}: any) => {
+  const navigation: any = useNavigation();
+
+  
+  console.log(route.params);
+  
   const dispatch = useDispatch();
   const {errorMessage} = useSelector((state: any) => state.auth);
   const [formVal, setFormVal] = useState({
     email: '',
     password: '',
   });
-
+  
   const {email, password} = formVal;
-
+  
   const onSubmit = async () => {
     if (!email || !password) {
       Alert.alert('All fields are required');
@@ -34,12 +39,14 @@ const LoginScreen = ({navigation}: any) => {
     }
     dispatch(loginUser(formVal));
   };
-
+  
   useEffect(() => {
     if (errorMessage) {
       Alert.alert(errorMessage);
     }
   }, [errorMessage]);
+  
+  const isUserCreatedSuccess = route?.params?.isUserCreatedSuccess;
   return (
     <SafeAreaView className="flex-1" style={{backgroundColor: themeColors.bg}}>
       <View className="flex-row justify-start p-3">
@@ -52,9 +59,14 @@ const LoginScreen = ({navigation}: any) => {
       <View className="flex items-center justify-center pb-6">
         <Image
           source={require('../../assets/images/login.png')}
-          style={{width: 200, height: 200}}
+          style={{width: 190, height: 190}}
         />
       </View>
+      {isUserCreatedSuccess && (
+        <Text className="text-center text-lg text-white mb-2">
+          Registration successfull, Please login
+        </Text>
+      )}
 
       <View
         className="flex-1 bg-white"
@@ -65,7 +77,7 @@ const LoginScreen = ({navigation}: any) => {
             <Text className="px-2 mb-1 text-gray-700">Email</Text>
             <TextInput
               placeholder="john.doe@gmail.com"
-              placeholderTextColor={"#6b7280"}
+              placeholderTextColor={'#6b7280'}
               value={formVal.email}
               onChangeText={newText => setFormVal({...formVal, email: newText})}
               className="bg-gray-200 rounded-2xl px-4 text-base text-gray-700"
@@ -75,7 +87,7 @@ const LoginScreen = ({navigation}: any) => {
             <Text className="px-2 mb-1 text-gray-700">Password</Text>
             <TextInput
               placeholder="Enter Password"
-              placeholderTextColor={"#6b7280"}
+              placeholderTextColor={'#6b7280'}
               secureTextEntry
               value={formVal.password}
               onChangeText={newText =>

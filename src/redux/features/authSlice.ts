@@ -4,8 +4,15 @@ import {
   createSlice,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import {loginUserService} from '../../common/services/userServices';
-import {getFromStorage, removeFromStorage, setToStorage} from '../../common/helper/storage';
+import {
+  loginUserService,
+  registerUserService,
+} from '../../common/services/userServices';
+import {
+  getFromStorage,
+  removeFromStorage,
+  setToStorage,
+} from '../../common/helper/storage';
 
 type InitialState = {
   isLoggedIn: boolean;
@@ -13,6 +20,7 @@ type InitialState = {
   token: any;
   errorMessage: string;
   isAuthLoader: boolean;
+  isUserCreatedSuccess: boolean;
 };
 
 const initialState = {
@@ -21,6 +29,7 @@ const initialState = {
   token: '',
   isAuthLoader: false,
   errorMessage: '',
+  isUserCreatedSuccess: false
 } as InitialState;
 
 export const auth = createSlice({
@@ -39,6 +48,7 @@ export const auth = createSlice({
   },
 
   extraReducers: builder => {
+    // LoginUser Case
     builder.addCase(loginUser.pending, (state, action) => {
       state.isAuthLoader = true;
       state.errorMessage = '';
@@ -49,7 +59,7 @@ export const auth = createSlice({
       if (action?.payload?.success && action?.payload?.token) {
         state.isLoggedIn = true;
         state.token = action.payload.token;
-        setToStorage("token" , action.payload.token)
+        setToStorage('token', action.payload.token);
       } else {
         if (action?.payload?.error) {
           state.errorMessage = action?.payload?.message;
@@ -57,6 +67,23 @@ export const auth = createSlice({
         state.isLoggedIn = false;
       }
     });
+    // RegisterUser Case
+    builder.addCase(registerUser.pending, (state, action)=>{
+      state.isAuthLoader = true;
+      state.errorMessage = '';
+    });
+    builder.addCase(registerUser.fulfilled, (state, action)=>{
+      state.isAuthLoader = false;
+      console.log(action.payload);
+      
+      if(action?.payload?.success){
+        state.isUserCreatedSuccess = true;
+      }else{
+        if(action?.payload?.error){
+          state.errorMessage = action?.payload?.message
+        }
+      }
+    })
   },
 });
 
@@ -64,6 +91,13 @@ export const loginUser: any = createAsyncThunk(
   'loginUser',
   async (userInfo: any) => {
     return loginUserService(userInfo);
+  },
+);
+
+export const registerUser: any = createAsyncThunk(
+  'registerUser',
+  async (userInfo: any) => {
+    return registerUserService(userInfo);
   },
 );
 

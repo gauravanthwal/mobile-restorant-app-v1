@@ -11,9 +11,9 @@ const HeaderLeftArrow = () => {
         navigation.goBack()
     }
   return (
-    <View className="bg-gray-200 p-2 rounded-full">
+    <View className="bg-gray-200 p-2 my-4 rounded-full">
       <TouchableOpacity onPress={goBack}>
-        <ChevronLeftIcon size={20} color={'#000'} />
+        <ChevronLeftIcon size={25} color={'#000'} />
       </TouchableOpacity>
     </View>
   );
