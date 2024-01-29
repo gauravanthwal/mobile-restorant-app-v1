@@ -4,12 +4,20 @@ import Profile from './Profile';
 import {ArrowLeftIcon} from 'react-native-heroicons/solid';
 import {useDispatch} from 'react-redux';
 import {logout} from '../../redux/features/authSlice';
+import { removeFromStorage } from '../../common/helper/storage';
+import { resetCartsReducer } from '../../redux/features/cartSlice';
+import { resetOrderReducer } from '../../redux/features/orderSlice';
+import { resetProductReducer } from '../../redux/features/productSlice';
 
 const MyAccount = () => {
   const dispatch = useDispatch();
 
   const userLogout = () => {
+    removeFromStorage('token')
     dispatch(logout());
+    dispatch(resetCartsReducer());
+    dispatch(resetOrderReducer());
+    dispatch(resetProductReducer())
   };
   return (
     <View>

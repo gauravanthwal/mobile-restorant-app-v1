@@ -1,4 +1,11 @@
-import {View, Text, Button, StatusBar, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  StatusBar,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '../../redux/features/authSlice';
@@ -10,25 +17,73 @@ import FeaturedCards from '../../components/home/FeaturedCards';
 import AllProducts from '../../components/home/AllProducts';
 import UserProfile from '../../components/home/UserProfile';
 import SearchProducts from '../../components/home/SearchProducts';
+import SkalatonCartScreen from '../../components/common/skeletons/SkalatonCartScreen';
+import SkalatonProducts from '../../components/common/skeletons/home/SkalatonProducts';
+import HomeBaseSkalaton from '../../components/common/skeletons/home/HomeBaseSkalaton';
+import SkalatonUserProfile from '../../components/common/skeletons/home/SkalatonUserProfile';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
-  const {allProducts} = useSelector((state: any) => state.product);
 
-  // console.log('products ', allProducts);
+  const [refreshing, setRefreshing] = useState(false);
+  const [loadBanner, setLoadBanner] = useState(true);
 
+  const {allProducts, isLoading} = useSelector((state: any) => state.product);
+
+  // Load data on refresh
+  const loadDataOnRefresh = () => {
+    setRefreshing(true);
+    setLoadBanner(true);
+    dispatch(getAllProducts());
+  };
+
+  // Set refreshing false
+  useEffect(() => {
+    if (refreshing) {
+      setRefreshing(false);
+      removeBannerSkalaton();
+    }
+  }, [isLoading]);
+
+  // Load initial data
   useEffect(() => {
     dispatch(getAllProducts());
+
+    removeBannerSkalaton();
   }, []);
+
+  const removeBannerSkalaton = () => {
+    setTimeout(() => {
+      setLoadBanner(false);
+    }, 500);
+  };
 
   return (
     <View className="flex-1 bg-gray-100">
-      <ScrollView>
-        <UserProfile/>
-        <SearchProducts/>
-        <FeaturedCards />
-        {allProducts && allProducts.length > 0 && (
-          <AllProducts allProducts={allProducts} />
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={loadDataOnRefresh}
+          />
+        }>
+        {loadBanner ? (
+          <SkalatonUserProfile />
+        ) : (
+          <>
+            <UserProfile />
+            <SearchProducts />
+            <FeaturedCards />
+          </>
+        )}
+        {isLoading ? (
+          <SkalatonProducts />
+        ) : (
+          <>
+            {allProducts && allProducts.length > 0 && (
+              <AllProducts allProducts={allProducts} isLoading={isLoading} />
+            )}
+          </>
         )}
       </ScrollView>
       <BottomTab />

@@ -1,34 +1,61 @@
-import {View, Text, Image, ScrollView} from 'react-native';
-import React, {useEffect} from 'react';
+import {View, Text, Image, ScrollView, RefreshControl} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
 import BottomTab from '../../components/common/navigation/BottomTab';
-import {getMyOrdersService} from '../../common/services/orderServices';
 import {useDispatch, useSelector} from 'react-redux';
 import {getMyOrders} from '../../redux/features/orderSlice';
-import {url} from 'inspector';
 import MyOrders from '../../components/orders/MyOrders';
-import FullScreenLoader from '../../components/common/ui/FullScreenLoader';
-import BaseScalaton from '../../components/common/skeletons/BaseScalaton';
+import SkalatonOrderScreen from '../../components/common/skeletons/SkalatonOrderScreen';
+import {useFocusEffect} from '@react-navigation/native';
 
 const OrdersScreen = () => {
   const dispatch = useDispatch();
+
+  const [refreshing, setRefreshing] = useState(false);
   const {myOrders, isLoading} = useSelector((state: any) => state.order);
 
-  useEffect(() => {
+  const loadDataOnRefresh = () => {
+    setRefreshing(true);
     dispatch(getMyOrders());
+  };
+
+  // Get data when component load and there is no items
+  useEffect(() => {
+    if (myOrders.length == 0) {
+      dispatch(getMyOrders());
+    }
   }, []);
 
+  // Seting Refreshing value false when data loaded successfully
+  useEffect(() => {
+    if (refreshing) {
+      setRefreshing(false);
+    }
+  }, [isLoading]);
+
+  // If want to get data every time user comes to this screen
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     dispatch(getMyOrders());
+  //   }, []),
+  // );
   return (
     <View className="flex-1 bg-gray-100">
-      <ScrollView>
-        {/* {isLoading && <FullScreenLoader />} */}
-        {true && <BaseScalaton width={'100%'} height={120}/>}
-        {myOrders.length == 0 && (
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={loadDataOnRefresh}
+          />
+        }>
+        {isLoading && <SkalatonOrderScreen />}
+        {!isLoading && myOrders.length == 0 && (
           <Text className="text-gray-700 text-center">
             You don't have any orders yet.
           </Text>
         )}
         <View className="px-3">
-          {myOrders &&
+          {!isLoading &&
+            myOrders &&
             myOrders.length > 0 &&
             myOrders.map(
               (item: any) =>

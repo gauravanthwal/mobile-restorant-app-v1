@@ -24,7 +24,13 @@ const initialState = {
 export const orderSlice = createSlice({
   name: 'order',
   initialState,
-  reducers: {},
+  reducers: {
+    resetOrderReducer: (state)=>{
+      state.myOrders = [];
+      state.isLoading = false;
+      state.selectedProduct = {};
+    }
+  },
 
   extraReducers: builder => {
     // Get MyOrders case
@@ -45,5 +51,5 @@ export const getMyOrders: any = createAsyncThunk('getMyOrders', async () => {
   return getMyOrdersService();
 });
 
-export const {} = orderSlice.actions;
+export const {resetOrderReducer} = orderSlice.actions;
 export default orderSlice.reducer;

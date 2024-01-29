@@ -5,7 +5,7 @@ import {
 import React from 'react';
 import Product from './Product';
 
-const AllProducts = ({allProducts}: any) => {
+const AllProducts = ({allProducts, isLoading}: any) => {
   return (
     <ScrollView>
       <View className="flex-1 flex-row flex-wrap justify-between mb-20">

@@ -19,9 +19,6 @@ import {loginUser} from '../../redux/features/authSlice';
 
 const LoginScreen = ({route}: any) => {
   const navigation: any = useNavigation();
-
-  
-  console.log(route.params);
   
   const dispatch = useDispatch();
   const {errorMessage} = useSelector((state: any) => state.auth);

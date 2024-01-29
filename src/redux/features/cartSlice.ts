@@ -23,7 +23,12 @@ const initialState = {
 export const cartSlice = createSlice({
   name: 'cart',
   initialState,
-  reducers: {},
+  reducers: {
+    resetCartsReducer: state => {
+      state.cartItems = [];
+      state.isLoading = false;
+    },
+  },
 
   extraReducers: builder => {
     // Get MyOrders case
@@ -47,5 +52,5 @@ export const getMyCartItems: any = createAsyncThunk(
   },
 );
 
-export const {} = cartSlice.actions;
+export const {resetCartsReducer} = cartSlice.actions;
 export default cartSlice.reducer;

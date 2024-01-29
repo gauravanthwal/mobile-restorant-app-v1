@@ -30,6 +30,11 @@ export const product = createSlice({
     removeSelectedProduct: (state, action) => {
       state.selectedProduct = {};
     },
+    resetProductReducer: (state)=>{
+      state.allProducts = [];
+      state.isLoading = false;
+      state.selectedProduct = {}
+    }
   },
 
   extraReducers: builder => {
@@ -53,5 +58,5 @@ export const getAllProducts: any = createAsyncThunk(
   },
 );
 
-export const {setSelectedProduct, removeSelectedProduct} = product.actions;
+export const {setSelectedProduct, removeSelectedProduct, resetProductReducer} = product.actions;
 export default product.reducer;
