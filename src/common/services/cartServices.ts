@@ -12,3 +12,30 @@ export const getMyCartItemsService = async () => {
     return err?.response?.data;
   }
 };
+
+export const addToCartSevice = async (data: any) => {
+  try {
+    const res = await axiosClientWithHeaders.post(`/cart/addToCart`, data);
+
+    console.log(res.data);
+
+    return res?.data;
+  } catch (err: any) {
+    console.log(err.response.data.message);
+    return err?.response?.data;
+  }
+};
+
+export const removeFromCartService = async (product: any) => {
+  try {
+    const res = await axiosClientWithHeaders.delete(`/cart/removeFromCart`, {
+      data: {product},
+    });
+    console.log(res.data);
+
+    return res?.data;
+  } catch (err: any) {
+    console.log(err.response.data.message);
+    return err?.response?.data;
+  }
+};

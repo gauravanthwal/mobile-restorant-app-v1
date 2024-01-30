@@ -27,3 +27,4 @@ export const registerUserService = async (userInfo: any) => {
     return err?.response?.data;
   }
 };
+

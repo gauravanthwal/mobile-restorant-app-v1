@@ -10,8 +10,10 @@ import {
 } from 'react-native-heroicons/outline';
 import {screens} from '../../../navigation/screenDetails';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const BottomTab = () => {
+  const {cartItems} = useSelector((state:any)=>state.cart)
   const navigation: any = useNavigation();
   const route = useRoute();
 
@@ -80,7 +82,7 @@ const BottomTab = () => {
                   ? themeColors.bg
                   : '#374151',
               }}>
-              Cart
+              {`Cart(${cartItems.length})`}
             </Text>
           </View>
         </TouchableOpacity>

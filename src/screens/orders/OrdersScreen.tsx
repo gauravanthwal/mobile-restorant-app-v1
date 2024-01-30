@@ -53,7 +53,7 @@ const OrdersScreen = () => {
             You don't have any orders yet.
           </Text>
         )}
-        <View className="px-3">
+        <View className="px-3 mb-16">
           {!isLoading &&
             myOrders &&
             myOrders.length > 0 &&

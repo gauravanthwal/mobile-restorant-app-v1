@@ -5,6 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import {screens} from '../../navigation/screenDetails';
 import {useDispatch} from 'react-redux';
 import {setSelectedProduct} from '../../redux/features/productSlice';
+import { addToCart } from '../../redux/features/cartSlice';
 
 const Product = ({item}: any) => {
   const dispatch = useDispatch();
@@ -13,6 +14,14 @@ const Product = ({item}: any) => {
   const showProductDetails = () => {
     dispatch(setSelectedProduct(item));
     navigation.navigate(screens.produtDetails.name);
+  };
+
+  const handleAddToCart = () => {
+    const payload = {
+      product: item?._id,
+      quantity: 1,
+    };
+    dispatch(addToCart(payload));
   };
   return (
     <View
@@ -39,7 +48,7 @@ const Product = ({item}: any) => {
             </Text>
           </View>
           <View>
-            <TouchableOpacity className="bg-gray-600 p-2 rounded-full">
+            <TouchableOpacity onPress={handleAddToCart} className="bg-gray-600 p-2 rounded-full">
               <PlusIcon size={15} color={'#fff'} />
             </TouchableOpacity>
           </View>

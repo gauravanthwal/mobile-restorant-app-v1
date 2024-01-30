@@ -7,8 +7,10 @@ const BASE_URL = 'https://server-restorant-app-v1-production.up.railway.app/api/
 // const BASE_URL = 'http://localhost:5000/api/v1';
 
 export const getTokenFromStore = () =>{
-  const auth = store.getState().auth;
-  if(auth && auth?.token){
+  const auth = store!.getState()!.auth;
+  if(auth && auth!.token){
+    // console.log(auth?.token);
+    
     return auth?.token;
   }
 }

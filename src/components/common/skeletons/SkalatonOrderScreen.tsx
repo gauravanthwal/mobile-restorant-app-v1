@@ -13,8 +13,6 @@ const SkalatonOrderScreen = ({width, height}: SkalatonOrderScreenPropsType) => {
         <BaseScalaton/>
         <BaseScalaton/>
         <BaseScalaton/>
-        <BaseScalaton/>
-        <BaseScalaton/>
     </View>
   )
 }

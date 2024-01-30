@@ -4,6 +4,7 @@ import {Provider} from 'react-redux';
 import {store} from './redux/store';
 import {StatusBar} from 'react-native';
 import ConfigurationProvider from './components/configurationProvider/ConfigurationProvider';
+import Toast from 'react-native-toast-message';
 
 const App = () => {
   // const isHermes = () => !!global.HermerInternal;
@@ -16,6 +17,7 @@ const App = () => {
           <StackNavigation />
         </NavigationContainer>
       </ConfigurationProvider>
+      <Toast />
     </Provider>
   );
 };

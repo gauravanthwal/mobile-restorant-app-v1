@@ -1,7 +1,19 @@
 import {View, Text, Pressable, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {TrashIcon} from 'react-native-heroicons/outline';
-const MyCartItemsList = ({cart}: any) => {
+import {useDispatch, useSelector} from 'react-redux';
+import {removeFromCart} from '../../redux/features/cartSlice';
+
+const MyCartItemsList = ({cart, setIsRemovingCartItem}: any) => {
+  const dispatch = useDispatch();
+
+  // const {token} = useSelector((state: any)=>state.auth)
+  // console.log('token', token);
+
+  const handleRemoveFromCart = () => {
+    setIsRemovingCartItem(true)
+    dispatch(removeFromCart(cart?.product?._id));
+  };
   return (
     <Pressable>
       <View className="bg-gray-50 my-2 p-4 pb-2 rounded-xl flex-row shadow-md">
@@ -26,7 +38,7 @@ const MyCartItemsList = ({cart}: any) => {
             </Text>
           </View>
           <View className="flex justify-end">
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleRemoveFromCart}>
               <TrashIcon size={25} color={'#fb7185'} />
             </TouchableOpacity>
           </View>

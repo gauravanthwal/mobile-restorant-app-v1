@@ -12,8 +12,6 @@ const SkalatonCartScreen = ({width, height}: SkalatonCartScreenPropsType) => {
       <BaseScalaton />
       <BaseScalaton />
       <BaseScalaton />
-      <BaseScalaton />
-      <BaseScalaton />
     </View>
   );
 };

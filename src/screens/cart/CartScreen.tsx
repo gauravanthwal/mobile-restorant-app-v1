@@ -6,9 +6,11 @@ import {getMyCartItems} from '../../redux/features/cartSlice';
 import MyCartItemsList from '../../components/cart/MyCartItemsList';
 import SkalatonCartScreen from '../../components/common/skeletons/SkalatonCartScreen';
 import {useFocusEffect} from '@react-navigation/native';
+import FullScreenLoader from '../../components/common/ui/FullScreenLoader';
 
 const CartScreen = () => {
   const dispatch = useDispatch();
+  const [isRemovingCartItem, setIsRemovingCartItem] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const {cartItems, isLoading} = useSelector((state: any) => state.cart);
 
@@ -22,13 +24,14 @@ const CartScreen = () => {
     if (refreshing) {
       setRefreshing(false);
     }
+    if (!isLoading) {
+      setIsRemovingCartItem(false);
+    }
   }, [isLoading]);
 
   // Seting Refreshing value false when data loaded successfully
   useEffect(() => {
     if (cartItems.length == 0) {
-      console.log('cart');
-
       dispatch(getMyCartItems());
     }
   }, []);
@@ -41,7 +44,8 @@ const CartScreen = () => {
   // );
   return (
     <View className="flex-1">
-      {isLoading && <SkalatonCartScreen />}
+      {isRemovingCartItem && <FullScreenLoader />}
+      {isLoading && !isRemovingCartItem && <SkalatonCartScreen />}
       {!isLoading && cartItems.length == 0 && (
         <Text className="text-gray-700 text-center">
           You have no items in your cart
@@ -54,12 +58,16 @@ const CartScreen = () => {
             onRefresh={loadDataOnRefresh}
           />
         }>
-        <View className="px-3">
+        <View className="px-3 mb-16">
           {!isLoading &&
             cartItems &&
             cartItems.length > 0 &&
             cartItems.map((item: any) => (
-              <MyCartItemsList key={item._id} cart={item} />
+              <MyCartItemsList
+                key={item._id}
+                cart={item}
+                setIsRemovingCartItem={setIsRemovingCartItem}
+              />
             ))}
         </View>
       </ScrollView>

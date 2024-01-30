@@ -12,8 +12,9 @@ import { resetProductReducer } from '../../redux/features/productSlice';
 const MyAccount = () => {
   const dispatch = useDispatch();
 
-  const userLogout = () => {
-    removeFromStorage('token')
+  const userLogout = async() => {
+    // await removeFromStorage('token')
+
     dispatch(logout());
     dispatch(resetCartsReducer());
     dispatch(resetOrderReducer());
