@@ -4,15 +4,29 @@ import {useSelector} from 'react-redux';
 import {Text, View} from 'react-native';
 import HeaderLeftArrow from '../components/common/navigation/HeaderLeftArrow';
 import Header from '../components/common/navigation/Header';
+import {getFromStorage} from '../common/helper/storage';
+import {useState} from 'react';
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigation = () => {
   let {isLoggedIn} = useSelector((state: any) => state.auth);
+  const [isFirstTime, setIsFirstTime] = useState(false);
+
+  const checkIfUserFirstTime = async () => {
+    
+    await getFromStorage('IfUserFirstTime').then(ifFirstTime => {
+
+      if (ifFirstTime !== null) {
+        setIsFirstTime(false);
+      } else {
+        setIsFirstTime(true);
+      }
+    });
+  };
+  checkIfUserFirstTime();
   return (
-    <Stack.Navigator
-      initialRouteName={screens.login.name}
-      screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       {isLoggedIn ? (
         <>
           <Stack.Screen
@@ -58,7 +72,7 @@ const StackNavigation = () => {
               headerShadowVisible: false,
               headerBackVisible: false,
               headerStyle: {
-                backgroundColor: '#f3f4f6'
+                backgroundColor: '#f3f4f6',
               },
               headerLeft: () => <HeaderLeftArrow />,
             }}
@@ -74,6 +88,12 @@ const StackNavigation = () => {
         </>
       ) : (
         <>
+          {isFirstTime && (
+            <Stack.Screen
+              name={screens.welcome.name}
+              component={screens.welcome.component}
+            />
+          )}
           <Stack.Screen
             name={screens.login.name}
             component={screens.login.component}
@@ -81,10 +101,6 @@ const StackNavigation = () => {
           <Stack.Screen
             name={screens.signup.name}
             component={screens.signup.component}
-          />
-          <Stack.Screen
-            name={screens.welcome.name}
-            component={screens.welcome.component}
           />
         </>
       )}

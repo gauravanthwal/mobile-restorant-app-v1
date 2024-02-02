@@ -1,9 +1,17 @@
 import {View, Text, SafeAreaView, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {themeColors} from '../../theme';
 import {screens} from '../../navigation/screenDetails';
+import { setToStorage } from '../../common/helper/storage';
 
 const Welcome = ({navigation}: any) => {
+
+  const setIfUserFirstTime = async() =>{
+    await setToStorage("IfUserFirstTime", "UserNotFirstTime")
+  }
+  useEffect(()=>{
+    setIfUserFirstTime()
+  },[])
   return (
     <SafeAreaView className="flex-1" style={{backgroundColor: themeColors.bg}}>
       <View className="flex-1 flex justify-around my-4">

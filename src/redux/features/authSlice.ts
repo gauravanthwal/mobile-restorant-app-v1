@@ -61,8 +61,8 @@ export const auth = createSlice({
       state.isAuthLoader = false;
 
       if (action?.payload?.success && action?.payload?.token) {
-        state.isLoggedIn = true;
         state.token = action!.payload!.token;
+        state.isLoggedIn = true;
         setToStorage('token', action!.payload!.token);
       } else {
         if (action?.payload?.error) {

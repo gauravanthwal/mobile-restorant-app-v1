@@ -21,6 +21,7 @@ import SkalatonCartScreen from '../../components/common/skeletons/SkalatonCartSc
 import SkalatonProducts from '../../components/common/skeletons/home/SkalatonProducts';
 import HomeBaseSkalaton from '../../components/common/skeletons/home/HomeBaseSkalaton';
 import SkalatonUserProfile from '../../components/common/skeletons/home/SkalatonUserProfile';
+import {getMyCartItems} from '../../redux/features/cartSlice';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ const HomeScreen = () => {
   // Load initial data
   useEffect(() => {
     dispatch(getAllProducts());
-
+    dispatch(getMyCartItems());
     removeBannerSkalaton();
   }, []);
 

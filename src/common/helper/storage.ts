@@ -25,3 +25,15 @@ export const removeFromStorage = async (key: string) => {
     // saving error
   }
 };
+export const getAllKeys = async () => {
+  try {
+    const keys = await AsyncStorage.getAllKeys();
+    const results = await AsyncStorage.multiGet(keys)
+
+    return results;
+    // return results.map(req=> JSON.parse(req))
+  } catch (err) {
+    // saving error
+  }
+};
+
